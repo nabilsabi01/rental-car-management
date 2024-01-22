@@ -1,0 +1,524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBRentalCar.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="attachments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="file_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="type_decument" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="centenu_file" Type="varbinary(max)" Nullable="false" />
+          <Property Name="reservation_id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cars">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="reg_number" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="model" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="brand" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mileage" Type="float" />
+          <Property Name="fuel_type" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="available" Type="bit" Nullable="false" />
+          <Property Name="rent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="id_card" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="driving_licence_id" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="60" />
+          <Property Name="address" Type="text" />
+          <Property Name="gender" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="payments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="payment_method" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="amount" Type="float" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="reservation_id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="start_date" Type="datetime" Nullable="false" />
+          <Property Name="end_date" Type="datetime" Nullable="false" />
+          <Property Name="daily_price" Type="float" Nullable="false" />
+          <Property Name="otherFees" Type="float" Nullable="false" />
+          <Property Name="description" Type="text" />
+          <Property Name="car_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="customer_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="created_at" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="user_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__attachmen__reser__4AB81AF0">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
+          <End Role="attachments" Type="Self.attachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="attachments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__payments__reserv__38996AB5">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
+          <End Role="payments" Type="Self.payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__car_i__32E0915F">
+          <End Role="cars" Type="Self.cars" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__custo__33D4B598">
+          <End Role="customers" Type="Self.customers" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_car">
+          <End Role="cars" Type="Self.cars" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_pay">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="payments" Type="Self.payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBRentalCarStoreContainer">
+          <EntitySet Name="attachments" EntityType="Self.attachments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cars" EntityType="Self.cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="customers" EntityType="Self.customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="payments" EntityType="Self.payments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__attachmen__reser__4AB81AF0" Association="Self.FK__attachmen__reser__4AB81AF0">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="attachments" EntitySet="attachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__payments__reserv__38996AB5" Association="Self.FK__payments__reserv__38996AB5">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__car_i__32E0915F" Association="Self.FK__reservati__car_i__32E0915F">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__custo__33D4B598" Association="Self.FK__reservati__custo__33D4B598">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_car" Association="Self.fk_car">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Customers" Association="Self.fk_Customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_pay" Association="Self.fk_pay">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBRentalCar" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="attachments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="file_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type_decument" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="centenu_file" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="reservation_id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.FK__attachmen__reser__4AB81AF0" FromRole="attachments" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="cars">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="reg_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="model" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="brand" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mileage" Type="Double" />
+          <Property Name="fuel_type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="available" Type="Boolean" Nullable="false" />
+          <Property Name="rent" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.FK__reservati__car_i__32E0915F" FromRole="cars" ToRole="reservations" />
+          <NavigationProperty Name="reservations1" Relationship="Self.fk_car" FromRole="cars" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="customers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_card" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="driving_licence_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="gender" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.FK__reservati__custo__33D4B598" FromRole="customers" ToRole="reservations" />
+          <NavigationProperty Name="reservations1" Relationship="Self.fk_Customers" FromRole="customers" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="payments">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="payment_method" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="amount" Type="Double" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="reservation_id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="reservations" Relationship="Self.FK__payments__reserv__38996AB5" FromRole="payments" ToRole="reservations" />
+          <NavigationProperty Name="reservations1" Relationship="Self.fk_pay" FromRole="payments" ToRole="reservations" />
+        </EntityType>
+        <EntityType Name="reservations">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="start_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="end_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="daily_price" Type="Double" Nullable="false" />
+          <Property Name="otherFees" Type="Double" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="car_id" Type="Guid" Nullable="false" />
+          <Property Name="customer_id" Type="Guid" Nullable="false" />
+          <Property Name="created_at" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="attachments" Relationship="Self.FK__attachmen__reser__4AB81AF0" FromRole="reservations" ToRole="attachments" />
+          <NavigationProperty Name="cars" Relationship="Self.FK__reservati__car_i__32E0915F" FromRole="reservations" ToRole="cars" />
+          <NavigationProperty Name="cars1" Relationship="Self.fk_car" FromRole="reservations" ToRole="cars" />
+          <NavigationProperty Name="customers" Relationship="Self.FK__reservati__custo__33D4B598" FromRole="reservations" ToRole="customers" />
+          <NavigationProperty Name="customers1" Relationship="Self.fk_Customers" FromRole="reservations" ToRole="customers" />
+          <NavigationProperty Name="payments" Relationship="Self.FK__payments__reserv__38996AB5" FromRole="reservations" ToRole="payments" />
+          <NavigationProperty Name="payments1" Relationship="Self.fk_pay" FromRole="reservations" ToRole="payments" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__attachmen__reser__4AB81AF0">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
+          <End Role="attachments" Type="Self.attachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="attachments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__car_i__32E0915F">
+          <End Role="cars" Type="Self.cars" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_car">
+          <End Role="cars" Type="Self.cars" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cars">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__custo__33D4B598">
+          <End Role="customers" Type="Self.customers" Multiplicity="1" />
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Customers">
+          <End Role="customers" Type="Self.customers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservations" Type="Self.reservations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="customers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reservations">
+              <PropertyRef Name="customer_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__payments__reserv__38996AB5">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1" />
+          <End Role="payments" Type="Self.payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_pay">
+          <End Role="reservations" Type="Self.reservations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="payments" Type="Self.payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="reservations">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="payments">
+              <PropertyRef Name="reservation_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBRentalCarEntity" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="attachments" EntityType="Self.attachments" />
+          <EntitySet Name="cars" EntityType="Self.cars" />
+          <EntitySet Name="customers" EntityType="Self.customers" />
+          <EntitySet Name="payments" EntityType="Self.payments" />
+          <EntitySet Name="reservations" EntityType="Self.reservations" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <AssociationSet Name="FK__attachmen__reser__4AB81AF0" Association="Self.FK__attachmen__reser__4AB81AF0">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="attachments" EntitySet="attachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__car_i__32E0915F" Association="Self.FK__reservati__car_i__32E0915F">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_car" Association="Self.fk_car">
+            <End Role="cars" EntitySet="cars" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__custo__33D4B598" Association="Self.FK__reservati__custo__33D4B598">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Customers" Association="Self.fk_Customers">
+            <End Role="customers" EntitySet="customers" />
+            <End Role="reservations" EntitySet="reservations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__payments__reserv__38996AB5" Association="Self.FK__payments__reserv__38996AB5">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+          <AssociationSet Name="fk_pay" Association="Self.fk_pay">
+            <End Role="reservations" EntitySet="reservations" />
+            <End Role="payments" EntitySet="payments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBRentalCarStoreContainer" CdmEntityContainer="DBRentalCarEntity">
+          <EntitySetMapping Name="attachments">
+            <EntityTypeMapping TypeName="DBRentalCar.attachments">
+              <MappingFragment StoreEntitySet="attachments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="file_name" ColumnName="file_name" />
+                <ScalarProperty Name="type_decument" ColumnName="type_decument" />
+                <ScalarProperty Name="centenu_file" ColumnName="centenu_file" />
+                <ScalarProperty Name="reservation_id" ColumnName="reservation_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cars">
+            <EntityTypeMapping TypeName="DBRentalCar.cars">
+              <MappingFragment StoreEntitySet="cars">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="reg_number" ColumnName="reg_number" />
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="brand" ColumnName="brand" />
+                <ScalarProperty Name="mileage" ColumnName="mileage" />
+                <ScalarProperty Name="fuel_type" ColumnName="fuel_type" />
+                <ScalarProperty Name="available" ColumnName="available" />
+                <ScalarProperty Name="rent" ColumnName="rent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="customers">
+            <EntityTypeMapping TypeName="DBRentalCar.customers">
+              <MappingFragment StoreEntitySet="customers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="id_card" ColumnName="id_card" />
+                <ScalarProperty Name="driving_licence_id" ColumnName="driving_licence_id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="gender" ColumnName="gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="payments">
+            <EntityTypeMapping TypeName="DBRentalCar.payments">
+              <MappingFragment StoreEntitySet="payments">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="payment_method" ColumnName="payment_method" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="reservation_id" ColumnName="reservation_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservations">
+            <EntityTypeMapping TypeName="DBRentalCar.reservations">
+              <MappingFragment StoreEntitySet="reservations">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="start_date" ColumnName="start_date" />
+                <ScalarProperty Name="end_date" ColumnName="end_date" />
+                <ScalarProperty Name="daily_price" ColumnName="daily_price" />
+                <ScalarProperty Name="otherFees" ColumnName="otherFees" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="DBRentalCar.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

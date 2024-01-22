@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="23e1fa69fdde47db849e3a946ee86b83" Name="Diagram1" ZoomLevel="73" ShowGrid="false" SnapToGrid="true">
+        <EntityTypeShape EntityType="DBRentalCar.attachments" Width="1.5" PointX="5.875" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBRentalCar.cars" Width="1.5" PointX="0.875" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBRentalCar.customers" Width="1.5" PointX="0.875" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBRentalCar.payments" Width="1.5" PointX="5.875" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBRentalCar.reservations" Width="1.5" PointX="3.375" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DBRentalCar.users" Width="1.5" PointX="8.375" PointY="4" IsExpanded="true" />
+        <AssociationConnector Association="DBRentalCar.FK__attachmen__reser__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="DBRentalCar.FK__reservati__car_i__32E0915F" ManuallyRouted="false" />
+        <AssociationConnector Association="DBRentalCar.fk_car" ManuallyRouted="false" ></AssociationConnector>
+        <AssociationConnector Association="DBRentalCar.FK__reservati__custo__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="DBRentalCar.fk_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="DBRentalCar.FK__payments__reserv__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="DBRentalCar.fk_pay" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
